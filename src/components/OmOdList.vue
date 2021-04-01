@@ -28,13 +28,13 @@
                 <td style="width:10%">
                   상품명
                 </td>
-                <td style="width:10%">
+                <td style="width:5%">
                   주문유형코드
                 </td>
-                <td style="width:10%">
+                <td style="width:5%">
                   주문진행상태코드
                 </td>
-                <td style="width:10%">
+                <td style="width:5%">
                   수량
                 </td>
                 <td style="width:10%">
@@ -46,10 +46,7 @@
                 <td style="width:10%">
                   주문완료일시
                 </td>
-                <td style="width:10%">
-
-                </td>
-                <td style="width:10%">
+                <td style="width:5%">
 
                 </td>
                 <td style="width:10%">
@@ -63,19 +60,19 @@
                 <td rowspan="{omod.omOdDtlList.length}">
                   {{omod.odrNm}}
                 </td>
-                <td colspan="10">
+                <td colspan="9">
                   <table style="width:100%">
                     <tr v-for="(dtl,j) in omod.omOdDtlList" :key=j>
                       <td style="width:10%">
                         {{ dtl.pdNm }}
                       </td>
-                      <td style="width:10%">
+                      <td style="width:5%">
                         {{ dtl.odTypCd }}
                       </td>
-                      <td style="width:10%">
+                      <td style="width:5%">
                         {{ dtl.odPrgsStepCd }}
                       </td>
-                      <td style="width:10%">
+                      <td style="width:5%">
                         {{ dtl.odQty }}
                       </td>
                       <td style="width:10%">
