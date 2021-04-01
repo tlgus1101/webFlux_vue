@@ -14,6 +14,9 @@
         </span>
         <hr>
         <div>
+          <div style="width:10%">
+            <button class="btn btn-default" style="margin: 10px" type="button" @click="cancelCheckOmOd()">선택취소</button>
+          </div>
             <table style="width:100%" border="1">
               <thead>
                 <td style="width:10%">
@@ -46,6 +49,12 @@
                 <td style="width:10%">
 
                 </td>
+                <td style="width:10%">
+
+                </td>
+                <td style="width:10%">
+
+                </td>
               </thead>
               <tr v-for="(omod,i) in omOdList" :key=i v-if="omod.omOdDtlList.length > 0">
                 <td rowspan="{omod.omOdDtlList.length}">
@@ -54,7 +63,7 @@
                 <td rowspan="{omod.omOdDtlList.length}">
                   {{omod.odrNm}}
                 </td>
-                <td colspan="8">
+                <td colspan="10">
                   <table style="width:100%">
                     <tr v-for="(dtl,j) in omod.omOdDtlList" :key=j>
                       <td style="width:10%">
@@ -77,6 +86,9 @@
                       </td>
                       <td style="width:10%">
                         {{dateFormat(dtl.odCmptDttm)}}
+                      </td>
+                      <td style="width:5%">
+                        <input v-if="dtl.odTypCd != '20'" type="checkbox" @click="checkboxOmOd($event.target.checked,dtl)">
                       </td>
                       <td style="width:10%">
                         <button v-if="dtl.odTypCd != '20'" class="btn btn-default" style="margin: 10px" type="button" @click="cancelOmOd(dtl)">주문취소</button>
@@ -139,12 +151,13 @@ export default {
     name:'OmOdList',
     data(){
         return{
+            cancel_check: {},
             msg:"OmOdList",
             odNo:"",
             mbNo:"",
             odrNm:"",
             omOdList:{},
-          omOdDtlList:[
+            omOdDtlList:[
               {
                 pdNo : "5",
                 pdNm : "칫솔",
@@ -182,7 +195,7 @@ export default {
                 odSeq : 0,
               },
             ],
-          omOdFvrDtlList : [
+            omOdFvrDtlList : [
               {
                 prNo:"6",
                 odSeq:0,
@@ -236,6 +249,44 @@ export default {
           this.mbNo="";
           this.odrNm="";
         },
+      checkboxOmOd(checked,dtl){
+        if(checked == true){
+          this.cancel_check[dtl.odNo+dtl.odSeq+dtl.procSeq] = dtl;
+        }else{
+          this.$delete(this.cancel_check, dtl.odNo+dtl.odSeq+dtl.procSeq);
+          //this.cancel_check[dtl.odNo+dtl.odSeq+dtl.procSeq] = null;
+        }
+
+      },
+      cancelCheckOmOd(){
+        var cancleList = [];
+        var i=0;
+        for(var dtlKey in this.cancel_check){
+          var dtl = this.cancel_check[dtlKey];
+          dtl.odTypCd = "20";
+          dtl.procSeq = null;
+          cancleList[i]=dtl;
+          i++;
+        }
+        console.log(cancleList)
+        self = this;
+        axios({
+          method:'post',
+          url:'http://127.0.0.1:8080/api/cancelOmOdList',
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true"
+          },
+          data:{
+            omOdDtlList: cancleList
+          },
+        }).then(function (response) {
+          if(response.status == 200){
+            alert("주문 취소 되었습니다.");
+            self.setList();
+          }
+        });
+      },
         cancelOmOd(dtl){
           dtl.odTypCd = "20";
           dtl.procSeq = null;
