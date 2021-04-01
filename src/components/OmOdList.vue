@@ -268,7 +268,6 @@ export default {
           cancleList[i]=dtl;
           i++;
         }
-        console.log(cancleList)
         self = this;
         axios({
           method:'post',
@@ -396,7 +395,6 @@ export default {
             }).then(function (response) {
                 if(response.status == 200){
                     self.omOdList = response.data;
-                    console.log(response.data);
                 }
             });
         },
