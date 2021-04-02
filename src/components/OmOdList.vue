@@ -262,20 +262,20 @@ export default {
           var dtl = this.cancel_check[dtlKey];
           dtl.odTypCd = "20";
           dtl.procSeq = null;
-          cancleList[i]=dtl;
+          // cancleList[i]=dtl;
+          cancleList.push(dtl);
           i++;
         }
+        console.log(cancleList)
         self = this;
         axios({
           method:'post',
-          url:'http://127.0.0.1:8080/api/cancelOmOdList',
+          url:'http://127.0.0.1:8080/api/cancelOmOd',
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": "true"
           },
-          data:{
-            omOdDtlList: cancleList
-          },
+          data:cancleList,
         }).then(function (response) {
           if(response.status == 200){
             alert("주문 취소 되었습니다.");
@@ -283,6 +283,34 @@ export default {
           }
         });
       },
+      // cancelCheckOmOd(){
+      //   var cancleList = [];
+      //   var i=0;
+      //   for(var dtlKey in this.cancel_check){
+      //     var dtl = this.cancel_check[dtlKey];
+      //     dtl.odTypCd = "20";
+      //     dtl.procSeq = null;
+      //     cancleList[i]=dtl;
+      //     i++;
+      //   }
+      //   self = this;
+      //   axios({
+      //     method:'post',
+      //     url:'http://127.0.0.1:8080/api/cancelOmOdList',
+      //     headers: {
+      //       "Access-Control-Allow-Origin": "*",
+      //       "Access-Control-Allow-Credentials": "true"
+      //     },
+      //     data:{
+      //       omOdDtlList: cancleList
+      //     },
+      //   }).then(function (response) {
+      //     if(response.status == 200){
+      //       alert("주문 취소 되었습니다.");
+      //       self.setList();
+      //     }
+      //   });
+      // },
         cancelOmOd(dtl){
           dtl.odTypCd = "20";
           dtl.procSeq = null;
