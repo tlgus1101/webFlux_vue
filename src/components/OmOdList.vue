@@ -15,6 +15,7 @@
         <hr>
         <div>
           <div style="width:10%">
+            <button class="btn btn-default" style="margin: 10px" type="button" @click="findClient()">findClient</button>
             <button class="btn btn-default" style="margin: 10px" type="button" @click="cancelCheckOmOd()">선택취소</button>
           </div>
             <table style="width:100%" border="1">
@@ -400,6 +401,27 @@ export default {
           }).then(function (response) {
             if(response.status == 200){
               self.omOdList = response.data;
+            }
+          });
+        },
+       findClient(){
+          self = this;
+          axios({
+            method:'post',
+            url:'http://127.0.0.1:8080/api/findClient',
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials": "true"
+            },
+            data:{
+              odNo: self.odNo,
+              mbNo: self.mbNo,
+              odrNm: self.odrNm,
+            }
+          }).then(function (response) {
+            if(response.status == 200){
+              console.log("findClient");
+              console.log(response.data);
             }
           });
         },
